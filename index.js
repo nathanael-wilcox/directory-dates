@@ -43,6 +43,11 @@ async function getByEmail(email) {
   return result;
 }
 
+async function updateStatus(id, status, partner) {
+  const result = await Person.findOneAndUpdate({ _id: id }, { status, partner }, { new: true });
+  return result;
+}
+
 app.post("/user", async (req, res, next) => {
   let { email, name } = req.body;
   let r = await getByEmail(email);
@@ -64,15 +69,14 @@ app.post("/get", async (req, res, next) => {
   res.send(r);
 });
 
-app.post("/create", async (req, res, next) => {
-  let { name, email, status, id } = req.body;
-  const person = new Person({
-    name,
-    email,
-    status,
-  });
-  await person.save();
-  res.redirect("/");
+app.post("/update", async (req, res, next) => {
+  let { id, status } = req.body;
+  let partner = "None";
+  if (req.body.partner) {
+    partner = req.body.partner;
+  }
+  let r = await updateStatus(id, status, partner);
+  res.send(r);
 });
 
 app.listen(port, () => {

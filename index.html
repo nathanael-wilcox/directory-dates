@@ -7,33 +7,20 @@
   </head>
   <body>
     <script>
-      let id;
-      await(async () => {
-        const rawResponse = await fetch("http://localhost:3000/user", {
+      let id = "691c07025d057cefe1acb814";
+      const fetchUser = async () => {
+        const rawResponse = await fetch("http://localhost:3000/update", {
           method: "POST",
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: "nthnlwlcx23@dordt.edu" }),
-        });
-        const content = await rawResponse.json().then((content) => {
-          id = content[0]._id;
-        });
-      })();
-      console.log(id);
-      const fetchUser = async (name) => {
-        const rawResponse = await fetch("http://localhost:3000/get", {
-          method: "POST",
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ names: [name] }),
+          body: JSON.stringify({ id, status: "Happy" }),
         });
         const content = await rawResponse.json();
         return content;
       };
+      console.log(fetchUser());
     </script>
   </body>
 </html>
