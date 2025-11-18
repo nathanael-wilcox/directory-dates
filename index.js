@@ -32,29 +32,27 @@ const Person = mongoose.model("Person", personSchema);
 
 mongoose.connect(process.env.DB_URL);
 
-async function getPerson(email) {
-  const result = await Person.find();
+async function getPeople(names) {
+  const result = await Person.find({ name: { $in: names } });
   return result;
 }
 
-app.get("/:id", async (req, res, next) => {
-  console.log(req.params.id);
-  const r = await getPerson("nthnlwlcx23@dordt.edu");
-  res.send(r);
-});
+async function getByEmail(email) {
+  const result = await Person.find({ email: email });
+  console.log(result);
+  return result;
+}
 
 app.post("/user", async (req, res, next) => {
   let { email } = req.body;
-  if (email) {
-    const r = await getPerson(email);
-    res.send(r);
-  } else {
-    res.send("Error");
-  }
+  const r = await getByEmail(email);
+  res.send(r);
 });
 
 app.post("/get", async (req, res, next) => {
-  let { email, id } = req.body;
+  let { names } = req.body;
+  const r = await getPeople(names);
+  res.send(r);
 });
 
 app.post("/create", async (req, res, next) => {

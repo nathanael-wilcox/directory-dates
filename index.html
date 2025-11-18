@@ -6,54 +6,34 @@
     <title>Document</title>
   </head>
   <body>
-    <form action="https://directory-dates.onrender.com/create" method="post">
-      <input type="text" name="email" />
-      <input type="text" name="name" />
-      <select name="status" id="status">
-        <option value="Single">Single</option>
-        <option value="Dating">Dating</option>
-      </select>
-      <button type="submit">Enter</button>
-    </form>
     <script>
-      //   const email = document.querySelectorAll(".region-user .field-content")[2].innerText;
-      let names = [];
-
       let id;
-
-      if (navigator.serviceWorker) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("../background.js")
-            // Gives us registration object
-            .then((reg) => console.log("Service Worker Registered"))
-            .catch((swErr) => console.log(`Service Worker Installation Error: ${swErr}}`));
+      await(async () => {
+        const rawResponse = await fetch("http://localhost:3000/user", {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: "nthnlwlcx23@dordt.edu" }),
         });
-      }
-
-      document.querySelectorAll(".views-row .group-other").forEach((e) => {
-        const nameEl = e.parentElement.parentElement.querySelector(".profile__name");
-        names.push(`${nameEl.children[0].innerText} ${nameEl.children[1].innerText}`);
-      });
-
-      document.querySelectorAll(".views-row .group-other").forEach((e) => {
-        const infoHeader = document.createElement("h3");
-        infoHeader.innerText = "Dating Info";
-        infoHeader.style = "margin-top: 20px";
-        const infoPartner = document.createElement("div");
-        infoPartner.classList = "field field--label-inline field--type-entity-reference clearfix";
-        const infoLabel = document.createElement("div");
-        infoLabel.classList = "field__label";
-        infoLabel.innerText = "Partner";
-        const infoData = document.createElement("div");
-        infoData.innerText = "Single";
-        infoPartner.appendChild(infoLabel);
-        infoPartner.appendChild(infoData);
-        e.appendChild(infoHeader);
-        e.appendChild(infoPartner);
-      });
-
-      console.log(names);
+        const content = await rawResponse.json().then((content) => {
+          id = content[0]._id;
+        });
+      })();
+      console.log(id);
+      const fetchUser = async (name) => {
+        const rawResponse = await fetch("http://localhost:3000/get", {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ names: [name] }),
+        });
+        const content = await rawResponse.json();
+        return content;
+      };
     </script>
   </body>
 </html>
