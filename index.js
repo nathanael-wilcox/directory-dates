@@ -39,19 +39,21 @@ async function getPeople(names) {
 
 async function getByEmail(email) {
   const result = await Person.find({ email: email });
-  console.log(result);
   return result;
 }
 
 async function updateStatus(id, status, partner) {
-  const result = await Person.findOneAndUpdate({ _id: id }, { status, partner }, { new: true });
+  let params = { partner };
+  if (status != "") {
+    params.status = status;
+  }
+  const result = await Person.findOneAndUpdate({ _id: id }, params, { new: true });
   return result;
 }
 
 app.post("/user", async (req, res, next) => {
   let { email, name } = req.body;
   let r = await getByEmail(email);
-  console.log(r);
   if (r[0]) {
     res.send(r);
   } else {
@@ -71,10 +73,14 @@ app.post("/get", async (req, res, next) => {
 });
 
 app.post("/update", async (req, res, next) => {
-  let { id, status } = req.body;
+  let { id } = req.body;
+  let status = "";
   let partner = "None";
   if (req.body.partner) {
     partner = req.body.partner;
+  }
+  if (req.body.status) {
+    status = req.body.status;
   }
   let r = await updateStatus(id, status, partner);
   res.send(r);
