@@ -44,9 +44,13 @@ app.get("/:id", async (req, res, next) => {
 });
 
 app.post("/user", async (req, res, next) => {
-  console.log(req.body);
-  const r = await getPerson("nthnlwlcx23@dordt.edu");
-  res.send(r);
+  let { email } = req.body;
+  if (email) {
+    const r = await getPerson(email);
+    res.send(r);
+  } else {
+    res.send("Error");
+  }
 });
 
 app.post("/get", async (req, res, next) => {
