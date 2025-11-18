@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="http://localhost:3000/create" method="post">
+      <input type="text" name="email" />
+      <input type="text" name="name" />
+      <select name="status" id="status">
+        <option value="Single">Single</option>
+        <option value="Dating">Dating</option>
+      </select>
+      <button type="submit">Enter</button>
+    </form>
+    <script>
+      const email = "nthnlwlcx23@dordt.edu";
+      fetch("http://localhost:3000/user", {
+        mode: "no-cors",
+        method: "POST",
+        body: JSON.stringify({
+          email: email,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }).then((response) => response.json());
+      // .then((json) => console.log(json));
+    </script>
+  </body>
+</html>
