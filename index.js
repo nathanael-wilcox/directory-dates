@@ -51,6 +51,7 @@ async function updateStatus(id, status, partner) {
 app.post("/user", async (req, res, next) => {
   let { email, name } = req.body;
   let r = await getByEmail(email);
+  console.log(r);
   if (r[0]) {
     res.send(r);
   } else {
