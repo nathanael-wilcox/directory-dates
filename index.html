@@ -6,7 +6,7 @@
     <title>Document</title>
   </head>
   <body>
-    <form action="http://localhost:3000/create" method="post">
+    <form action="https://directory-dates.onrender.com/create" method="post">
       <input type="text" name="email" />
       <input type="text" name="name" />
       <select name="status" id="status">
@@ -16,18 +16,44 @@
       <button type="submit">Enter</button>
     </form>
     <script>
-      const email = "nthnlwlcx23@dordt.edu";
-      fetch("http://localhost:3000/user", {
-        mode: "no-cors",
-        method: "POST",
-        body: JSON.stringify({
-          email: email,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      }).then((response) => response.json());
-      // .then((json) => console.log(json));
+      //   const email = document.querySelectorAll(".region-user .field-content")[2].innerText;
+      let names = [];
+
+      let id;
+
+      if (navigator.serviceWorker) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("../background.js")
+            // Gives us registration object
+            .then((reg) => console.log("Service Worker Registered"))
+            .catch((swErr) => console.log(`Service Worker Installation Error: ${swErr}}`));
+        });
+      }
+
+      document.querySelectorAll(".views-row .group-other").forEach((e) => {
+        const nameEl = e.parentElement.parentElement.querySelector(".profile__name");
+        names.push(`${nameEl.children[0].innerText} ${nameEl.children[1].innerText}`);
+      });
+
+      document.querySelectorAll(".views-row .group-other").forEach((e) => {
+        const infoHeader = document.createElement("h3");
+        infoHeader.innerText = "Dating Info";
+        infoHeader.style = "margin-top: 20px";
+        const infoPartner = document.createElement("div");
+        infoPartner.classList = "field field--label-inline field--type-entity-reference clearfix";
+        const infoLabel = document.createElement("div");
+        infoLabel.classList = "field__label";
+        infoLabel.innerText = "Partner";
+        const infoData = document.createElement("div");
+        infoData.innerText = "Single";
+        infoPartner.appendChild(infoLabel);
+        infoPartner.appendChild(infoData);
+        e.appendChild(infoHeader);
+        e.appendChild(infoPartner);
+      });
+
+      console.log(names);
     </script>
   </body>
 </html>

@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -36,6 +37,12 @@ async function getPerson(email) {
   return result;
 }
 
+app.get("/:id", async (req, res, next) => {
+  console.log(req.params.id);
+  const r = await getPerson("nthnlwlcx23@dordt.edu");
+  res.send(r);
+});
+
 app.post("/user", async (req, res, next) => {
   console.log(req.body);
   const r = await getPerson("nthnlwlcx23@dordt.edu");
@@ -57,6 +64,6 @@ app.post("/create", async (req, res, next) => {
   res.redirect("/");
 });
 
-app.listen(3000, () => {
+app.listen(port, () => {
   console.log("Running");
 });
