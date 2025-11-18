@@ -42,6 +42,11 @@ async function getByEmail(email) {
   return result;
 }
 
+async function getById(id) {
+  const result = await Person.find({ _id: id });
+  return result;
+}
+
 async function updateStatus(id, status, partner) {
   let params = { partner };
   if (status != "") {
@@ -76,14 +81,20 @@ app.post("/update", async (req, res, next) => {
   let { id } = req.body;
   let status = "";
   let partner = "None";
+  const person = await getById(id);
   if (req.body.partner) {
     partner = req.body.partner;
   }
   if (req.body.status) {
     status = req.body.status;
   }
-  let r = await updateStatus(id, status, partner);
-  res.send(r);
+  if (person[0]) {
+    if (status == "Married" && person[0].partner) {
+      partner = person[0].partner;
+    }
+    let r = await updateStatus(id, status, partner);
+    res.send(r);
+  }
 });
 
 app.listen(port, () => {
