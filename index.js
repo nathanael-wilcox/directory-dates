@@ -44,9 +44,18 @@ async function getByEmail(email) {
 }
 
 app.post("/user", async (req, res, next) => {
-  let { email } = req.body;
-  const r = await getByEmail(email);
-  res.send(r);
+  let { email, name } = req.body;
+  let r = await getByEmail(email);
+  if (r[0]) {
+    res.send(r);
+  } else {
+    const person = new Person({
+      name,
+      email,
+    });
+    await person.save();
+    res.send([person]);
+  }
 });
 
 app.post("/get", async (req, res, next) => {
