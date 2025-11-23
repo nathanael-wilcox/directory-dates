@@ -105,9 +105,3 @@ app.get("/", (req, res, next) => {
 app.listen(port, () => {
   console.log("Server started");
 });
-
-setInterval(() => {
-  axios.get("http://bit.ly/2mTM3nY", { responseType: "json" }).then((res) => {
-    console.log(res.status + " - " + res.statusText);
-  });
-}, 1000 * 60 * 14);
