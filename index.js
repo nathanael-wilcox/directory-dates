@@ -10,6 +10,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
 
 const personSchema = new mongoose.Schema({
   name: {
@@ -57,6 +58,10 @@ async function updateStatus(id, status, partner) {
   return result;
 }
 
+app.get("/", (req, res, next) => {
+  res.render("index");
+});
+
 app.post("/user", async (req, res, next) => {
   let { email, name } = req.body;
   let r = await getByEmail(email);
@@ -96,10 +101,6 @@ app.post("/update", async (req, res, next) => {
     let r = await updateStatus(id, status, partner);
     res.send(r);
   }
-});
-
-app.get("/", (req, res, next) => {
-  res.send("Running");
 });
 
 app.listen(port, () => {
