@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
 const mongoose = require("mongoose");
 const express = require("express");
+const axios = require("axios").default;
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
@@ -97,6 +98,16 @@ app.post("/update", async (req, res, next) => {
   }
 });
 
-app.listen(port, () => {
-  console.log("Running");
+app.get("/", (req, res, next) => {
+  res.send("Running");
 });
+
+app.listen(port, () => {
+  console.log("Server started");
+});
+
+setInterval(() => {
+  axios.get("http://bit.ly/2mTM3nY", { responseType: "json" }).then((res) => {
+    console.log(res.status + " - " + res.statusText);
+  });
+}, 1000 * 60 * 14);
