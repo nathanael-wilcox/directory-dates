@@ -32,12 +32,6 @@ const personSchema = new mongoose.Schema({
 
 const Person = mongoose.model("Person", personSchema);
 
-if (process.env.DB_URL) {
-  console.log(process.env.DB_URL);
-} else {
-  console.log("Nothing found");
-}
-
 mongoose.connect(process.env.DB_URL);
 
 async function getPeople(names) {
@@ -66,6 +60,16 @@ async function updateStatus(id, status, partner) {
 
 app.get("/", (req, res, next) => {
   res.render("index");
+});
+
+app.post("/test", async (req, res, next) => {
+  let { email, name } = req.body;
+  if (process.env.DB_URL) {
+    console.log(process.env.DB_URL);
+  } else {
+    console.log("Nothing found");
+  }
+  res.send({email, name});
 });
 
 app.post("/user", async (req, res, next) => {
