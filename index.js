@@ -62,19 +62,8 @@ app.get("/", (req, res, next) => {
   res.render("index");
 });
 
-app.post("/test", async (req, res, next) => {
-  let { email, name } = req.body;
-  if (process.env.DB_URL) {
-    console.log(process.env.DB_URL);
-  } else {
-    console.log("Nothing found");
-  }
-  res.send({email, name});
-});
-
 app.post("/user", async (req, res, next) => {
   let { email, name } = req.body;
-  console.log(email, name);
   let r = await getByEmail(email);
   if (r[0]) {
     res.send(r);
