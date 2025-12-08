@@ -64,6 +64,7 @@ app.get("/", (req, res, next) => {
 
 app.post("/user", async (req, res, next) => {
   let { email, name } = req.body;
+  console.log(email, name);
   let r = await getByEmail(email);
   if (r[0]) {
     res.send(r);
