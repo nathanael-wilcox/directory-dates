@@ -32,6 +32,12 @@ const personSchema = new mongoose.Schema({
 
 const Person = mongoose.model("Person", personSchema);
 
+if (process.env.DB_URL) {
+  console.log(process.env.DB_URL);
+} else {
+  console.log("Nothing found");
+}
+
 mongoose.connect(process.env.DB_URL);
 
 async function getPeople(names) {
