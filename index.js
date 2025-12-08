@@ -78,6 +78,12 @@ app.post("/user", async (req, res, next) => {
   }
 });
 
+app.post("/test", async (req, res, next) => {
+  let { email, name } = req.body;
+  console.log(email, name);
+  res.send({email, name});
+});
+
 app.post("/get", async (req, res, next) => {
   let { names } = req.body;
   const r = await getPeople(names);
